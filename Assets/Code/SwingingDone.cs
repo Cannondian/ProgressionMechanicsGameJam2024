@@ -29,12 +29,14 @@ public class SwingingDone : MonoBehaviour
     public Transform predictionPoint;
 
     [Header("Input")]
-    public KeyCode swingKey = KeyCode.Mouse0;
-
-    private void Start()
+    public KeyCode swingKey = KeyCode.P;
+    
+    public void OnPickup()
     {
         cam = FindObjectOfType<Camera>().transform;
         player = FindObjectOfType<FPEFirstPersonController>().transform;
+        rb = player.GetComponent<Rigidbody>();
+        orientation = player.transform;
     }
 
 
