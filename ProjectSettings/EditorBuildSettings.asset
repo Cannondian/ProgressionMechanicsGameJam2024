@@ -6,12 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/FirstPersonExplorationKit/Scenes/Utility/InventoryImageCapture.unity
-    guid: f4e2fa483a039c64587a8adfc9e43da1
-  - enabled: 1
     path: Assets/FirstPersonExplorationKit/Scenes/DemoScenes_2.2/demoMainMenu_0.unity
     guid: 6a819d87835309642b03dd8b59dbc760
   - enabled: 1
@@ -20,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/FirstPersonExplorationKit/Scenes/DemoScenes_2.2/demoScene_2.unity
     guid: 6dd73e1d1daa41a418e414d48396610e
+  - enabled: 1
+    path: Assets/FirstPersonExplorationKit/Scenes/Utility/InventoryImageCapture.unity
+    guid: f4e2fa483a039c64587a8adfc9e43da1
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}
