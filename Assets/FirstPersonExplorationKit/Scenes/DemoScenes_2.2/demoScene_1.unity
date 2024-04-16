@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2033173578}
-  m_IndirectSpecularColor: {r: 0.18144128, g: 0.22707063, b: 0.3073913, a: 1}
+  m_IndirectSpecularColor: {r: 0.18144147, g: 0.22707114, b: 0.3073919, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -11950,14 +11950,15 @@ MonoBehaviour:
   whatIsGrappleable:
     serializedVersion: 2
     m_Bits: 4294967295
+  fpeController: {fileID: 0}
   orientation: {fileID: 0}
   rb: {fileID: 0}
   horizontalThrustForce: 2000
   forwardThrustForce: 4000
   extendCableSpeed: 20
-  predictionSphereCastRadius: 3
+  predictionSphereCastRadius: 20
   predictionPoint: {fileID: 1661397220}
-  swingKey: 112
+  swingKey: 308
 --- !u!54 &845962181
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12100,10 +12101,10 @@ MonoBehaviour:
   examinationOffsetUp: 0
   examinationOffsetForward: 0
   pickupRotationOffset: {x: 0, y: 0, z: 0}
-  tossStrength: 1
+  tossStrength: 0.3
   tossOffsetUp: 0.1
   tossOffsetForward: 0.1
-  rotationLockType: 0
+  rotationLockType: 3
   enableSounds: 1
   pickupSounds: []
   putBackSounds: []
@@ -12126,7 +12127,19 @@ MonoBehaviour:
   pickupRepeatMode: 0
   OnPutBackEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 845962180}
+        m_TargetAssemblyTypeName: SwingingDone, Assembly-CSharp
+        m_MethodName: OnDrop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   putbackRepeatMode: 0
 --- !u!82 &845962187
 AudioSource:
@@ -21957,7 +21970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1661397220
 Transform:
   m_ObjectHideFlags: 0
@@ -21968,8 +21981,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.501, y: 1.47, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 845962185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22001,7 +22014,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661397219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

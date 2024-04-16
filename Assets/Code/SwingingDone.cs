@@ -32,17 +32,30 @@ public class SwingingDone : MonoBehaviour
     [Header("Input")]
     public KeyCode swingKey = KeyCode.P;
     
+    private bool isActive = false;
+    
     public void OnPickup()
     {
         cam = FindObjectOfType<Camera>().transform;
         player = FindObjectOfType<FPEFirstPersonController>().transform;
         rb = player.GetComponent<Rigidbody>();
         orientation = player.transform;
+        fpeController = player.GetComponent<FPEFirstPersonController>();
+        predictionPoint.gameObject.SetActive(true);
+        isActive = true;
+    }
+    
+    public void OnDrop()
+    {
+        predictionPoint.gameObject.SetActive(false);
+        isActive = false;
     }
 
 
     private void Update()
     {
+        if (!isActive) return;
+        
         if (Input.GetKeyDown(swingKey)) StartSwing();
         if (Input.GetKeyUp(swingKey)) StopSwing();
 
