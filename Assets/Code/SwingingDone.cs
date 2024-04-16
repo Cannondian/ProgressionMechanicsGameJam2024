@@ -10,6 +10,7 @@ public class SwingingDone : MonoBehaviour
     public LineRenderer lr;
     public Transform gunTip, cam, player;
     public LayerMask whatIsGrappleable;
+    public FPEFirstPersonController fpeController;
 
     [Header("Swinging")]
     private float maxSwingDistance = 25f;
@@ -102,6 +103,7 @@ public class SwingingDone : MonoBehaviour
         // return if predictionHit not found
         if (predictionHit.point == Vector3.zero) return;
         
+        fpeController.playerFrozen = true;
 
         swingPoint = predictionHit.point;
         joint = player.gameObject.AddComponent<SpringJoint>();

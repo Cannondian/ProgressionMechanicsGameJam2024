@@ -18,6 +18,8 @@ namespace Whilefun.FPEKit {
         private float m_WalkSpeedStanding = 4.0f;
         [SerializeField]
         private float m_RunSpeedStanding = 10.0f;
+        [SerializeField]
+        private float m_SwingSpeed = 17.0f;
 
         private bool isWalking = true;
 
@@ -78,6 +80,9 @@ namespace Whilefun.FPEKit {
         private bool m_PreviouslyGrounded = true;
         private bool m_Jumping = false;
         private AudioSource m_AudioSource = null;
+        
+        // swinging stuff
+        private bool isSwinging = false;
 
         // Crouching Stuff //
         private bool isCrouching = false;
@@ -600,6 +605,11 @@ namespace Whilefun.FPEKit {
             else
             {
                 speed = isWalking ? m_WalkSpeedStanding : m_RunSpeedStanding;
+            }
+
+            if (isSwinging)
+            {
+                speed = m_SwingSpeed;
             }
 
             m_Input = new Vector2(horizontal, vertical);
