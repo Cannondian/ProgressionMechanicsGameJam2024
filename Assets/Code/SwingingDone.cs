@@ -10,7 +10,7 @@ public class SwingingDone : MonoBehaviour
     public LineRenderer lr;
     public Transform gunTip, cam, player;
     public LayerMask whatIsGrappleable;
-    public FPEFirstPersonController fpeController;
+    public PlayerController fpeController;
 
     [Header("Swinging")]
     private float maxSwingDistance = 25f;
@@ -33,14 +33,15 @@ public class SwingingDone : MonoBehaviour
     public KeyCode swingKey = KeyCode.P;
     
     private bool isActive = false;
+    private Vector3 remainingForce;
     
     public void OnPickup()
     {
-        cam = FindObjectOfType<Camera>().transform;
-        player = FindObjectOfType<FPEFirstPersonController>().transform;
+        player = FindObjectOfType<PlayerController>().transform;
+        cam = player.GetComponentInChildren<Camera>().transform;
         rb = player.GetComponent<Rigidbody>();
         orientation = player.transform;
-        fpeController = player.GetComponent<FPEFirstPersonController>();
+        fpeController = player.GetComponent<PlayerController>();
         predictionPoint.gameObject.SetActive(true);
         isActive = true;
     }
@@ -58,7 +59,7 @@ public class SwingingDone : MonoBehaviour
         
         if (Input.GetKeyDown(swingKey)) StartSwing();
         if (Input.GetKeyUp(swingKey)) StopSwing();
-
+        
         CheckForSwingPoints();
 
         if (joint != null) OdmGearMovement();
@@ -116,7 +117,8 @@ public class SwingingDone : MonoBehaviour
         // return if predictionHit not found
         if (predictionHit.point == Vector3.zero) return;
         
-        fpeController.playerFrozen = true;
+        fpeController.ResetRestrictions();
+        fpeController.swinging = true;
 
         swingPoint = predictionHit.point;
         joint = player.gameObject.AddComponent<SpringJoint>();
@@ -140,7 +142,7 @@ public class SwingingDone : MonoBehaviour
 
     public void StopSwing()
     {
-
+        fpeController.swinging = false;   
         lr.positionCount = 0;
 
         Destroy(joint);
@@ -148,6 +150,7 @@ public class SwingingDone : MonoBehaviour
 
     private void OdmGearMovement()
     {
+        Debug.Log("we are sewinging");
         // right
         if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * (horizontalThrustForce * Time.deltaTime));
         // left

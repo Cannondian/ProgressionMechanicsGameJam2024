@@ -43,6 +43,8 @@ namespace Whilefun.FPEKit
         public enum eRotationType { FREE, HORIZONTAL, VERTICAL, NONE };
         [Tooltip("FREE - Free rotation in both axes.\nHORIZONTAL - Only rotate side to side.\nVERTICAL - Only rotate up and down.\nNONE - No rotation allowed.")]
         public eRotationType rotationLockType = eRotationType.FREE;
+        
+        public bool canBePutBack = true;
 
         [Header("Sound Management")]
         [Tooltip("Uncheck this if you don't want this object to make sounds")]

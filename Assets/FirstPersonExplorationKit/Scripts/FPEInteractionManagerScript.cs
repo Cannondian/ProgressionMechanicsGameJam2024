@@ -378,6 +378,10 @@ namespace Whilefun.FPEKit
                     // Already holding an object //
                     if (currentHeldObject)
                     {
+                        if (!currentHeldObject.GetComponent<FPEInteractablePickupScript>().canBePutBack)
+                        {
+                            return;
+                        }
 
                         // If I was looking at a valid Put Back location, put the object back
                         if (currentPutbackObject)
@@ -2191,7 +2195,7 @@ namespace Whilefun.FPEKit
 
             disableMouseLook();
             disableMovement();
-            thePlayer.GetComponent<FPEFirstPersonController>().playerFrozen = true;
+            thePlayer.GetComponent<PlayerController>().freeze = true;
 
             if (showCursor)
             {
@@ -2211,7 +2215,7 @@ namespace Whilefun.FPEKit
 
             enableMouseLook();
             enableMovement();
-            thePlayer.GetComponent<FPEFirstPersonController>().playerFrozen = false;
+            thePlayer.GetComponent<PlayerController>().freeze = false;
 
             if (hideCursor)
             {
@@ -2304,13 +2308,13 @@ namespace Whilefun.FPEKit
         // If using another Character Controller (UFPS, etc.) substitute disable functionality
         private void disableMovement()
         {
-            thePlayer.GetComponent<FPEFirstPersonController>().disableMovement();
+            thePlayer.GetComponent<PlayerController>().freeze = true;
         }
         // Unlocks movement of Character Controller. 
         // If using another Character Controller (UFPS, etc.) substitute enable functionality
         private void enableMovement()
         {
-            thePlayer.GetComponent<FPEFirstPersonController>().enableMovement();
+            thePlayer.GetComponent<PlayerController>().freeze = false;
         }
 
         public bool isMouseLookEnabled()
@@ -2327,7 +2331,7 @@ namespace Whilefun.FPEKit
 
             currentDock = dock.gameObject;
             dock.dock();
-            thePlayer.GetComponent<FPEFirstPersonController>().dockThePlayer(dock.DockTransform, dock.DockedViewLimits, dock.FocusTransform.position, dock.SmoothDock);
+           // thePlayer.GetComponent<PlayerController>().dockThePlayer(dock.DockTransform, dock.DockedViewLimits, dock.FocusTransform.position, dock.SmoothDock);
             currentDockActionType = FPEFirstPersonController.ePlayerDockingState.DOCKING;
             dockingInProgress = true;
 
@@ -2341,7 +2345,7 @@ namespace Whilefun.FPEKit
         private void UnDockPlayer(bool smoothDock = false)
         {
 
-            thePlayer.GetComponent<FPEFirstPersonController>().unDockThePlayer(smoothDock);
+            //thePlayer.GetComponent<PlayerController>().unDockThePlayer(smoothDock);
             currentDock.GetComponent<FPEInteractableDockScript>().unDock();
             currentDockActionType = FPEFirstPersonController.ePlayerDockingState.UNDOCKING;
             dockingInProgress = true;
@@ -2354,7 +2358,8 @@ namespace Whilefun.FPEKit
         /// <returns>True if docking is in progress, false if it is not</returns>
         private bool dockingCompleted()
         {
-            return !thePlayer.GetComponent<FPEFirstPersonController>().dockInProgress();
+           // return !thePlayer.GetComponent<PlayerController>().dockInProgress();
+           return true;
         }
 
         /// <summary>
@@ -2405,7 +2410,7 @@ namespace Whilefun.FPEKit
             disableMouseLook();
             disableMovement();
 
-            thePlayer.GetComponent<FPEFirstPersonController>().playerFrozen = true;
+            thePlayer.GetComponent<PlayerController>().freeze = true;
 
             setInteractionState(eInteractionState.SUSPENDED);
             setCursorVisibility(true);
@@ -2420,7 +2425,7 @@ namespace Whilefun.FPEKit
 
             if (resetLook)
             {
-                FPEPlayer.Instance.GetComponent<FPEFirstPersonController>().setPlayerLookToNeutralLevelLoadedPosition();
+                //FPEPlayer.Instance.GetComponent<PlayerController>().setPlayerLookToNeutralLevelLoadedPosition();
             }
 
             playerSuspendedForSaveLoad = false;
@@ -2428,7 +2433,7 @@ namespace Whilefun.FPEKit
             enableMouseLook();
             enableMovement();
 
-            thePlayer.GetComponent<FPEFirstPersonController>().playerFrozen = false;
+            thePlayer.GetComponent<PlayerController>().freeze = false;
 
             setInteractionState(eInteractionState.FREE);
             setCursorVisibility(false);
@@ -2441,7 +2446,7 @@ namespace Whilefun.FPEKit
         /// </summary>
         public void resetPlayerOnReturnToMainMenu()
         {
-            FPEPlayer.Instance.GetComponent<FPEFirstPersonController>().resetPlayerForMainMenu();
+            //FPEPlayer.Instance.GetComponent<PlayerController>().resetPlayerForMainMenu();
                     }
 
         #endregion

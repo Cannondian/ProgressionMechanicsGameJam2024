@@ -1,8 +1,7 @@
 using UnityEngine;
 
 namespace Whilefun.FPEKit {
-
-    [RequireComponent(typeof(CharacterController))]
+    
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(FPEMouseLook))]
 
@@ -75,14 +74,13 @@ namespace Whilefun.FPEKit {
         //private float m_YRotation = 0.0f;
         private Vector2 m_Input = Vector2.zero;
         private Vector3 m_MoveDir = Vector3.zero;
-        private CharacterController m_CharacterController = null;
-        private CollisionFlags m_CollisionFlags;
+        private bool isGrounded;
         private bool m_PreviouslyGrounded = true;
         private bool m_Jumping = false;
         private AudioSource m_AudioSource = null;
         
         // swinging stuff
-        private bool isSwinging = false;
+        public bool isSwinging = false;
 
         // Crouching Stuff //
         private bool isCrouching = false;
@@ -91,7 +89,6 @@ namespace Whilefun.FPEKit {
         private float previousCharacterHeight = 0.0f;
         //The denominator with which we divide "standing" height to determine crouching height
         private float characterCrouchDivisor = 2.0f;
-        private CharacterController controller;
         // Crouching camera stuff
         private Vector3 cameraOffsetStanding = Vector3.zero;
         private Vector3 cameraOffsetCrouching = Vector3.zero;
@@ -139,6 +136,8 @@ namespace Whilefun.FPEKit {
         private Vector3 previousWorldPosition = Vector3.zero;
 
         public bool playerFrozen = false;
+        public Rigidbody rigidbody;
+        [SerializeField] private CapsuleCollider collider;
 
         private FPEMouseLook myMouseLook = null;
         private FPEInputManager myInputManager = null;
@@ -146,10 +145,7 @@ namespace Whilefun.FPEKit {
 
         void Awake()
         {
-
-            controller = gameObject.GetComponent<CharacterController>();
-
-            standingHeight = controller.height;
+            standingHeight = collider.height;
             crouchingHeight = standingHeight / characterCrouchDivisor;
             previousCharacterHeight = standingHeight;
 
@@ -164,8 +160,6 @@ namespace Whilefun.FPEKit {
 
         private void Start()
         {
-
-            m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
 
             cumulativeStepCycleCount = 0.0f;
@@ -244,20 +238,21 @@ namespace Whilefun.FPEKit {
             {
 
                 RotateView();
+                DoGroundCheck();
 
                 // Only jump if we are allowed, not already jumping, and not crouched
                 if (jumpEnabled && !m_Jump && !isCrouching)
                 {
 
                     // Workaround for conflicting jump and menu buttons when using XBox controller. When assigned bumper is pressed when menu is open, player jumps when menu is closed.
-                    if (Time.timeScale != 0.0f && m_CharacterController.isGrounded)
+                    if (Time.timeScale != 0.0f && isGrounded)
                     {
                         m_Jump = myInputManager.GetButtonDown(FPEInputManager.eFPEInput.FPE_INPUT_JUMP);
                     }
 
                 }
 
-                if (!m_PreviouslyGrounded && m_CharacterController.isGrounded && (m_MoveDir.y < minimumFallSpeed))
+                if (!m_PreviouslyGrounded && isGrounded && (m_MoveDir.y < minimumFallSpeed))
                 {
 
                     StartCoroutine(m_JumpBob.DoBobCycle());
@@ -267,12 +262,12 @@ namespace Whilefun.FPEKit {
 
                 }
 
-                if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
+                if (!isGrounded && !m_Jumping && m_PreviouslyGrounded)
                 {
                     m_MoveDir.y = 0f;
                 }
 
-                m_PreviouslyGrounded = m_CharacterController.isGrounded;
+                m_PreviouslyGrounded = isGrounded;
 
                 // Crouch based on crouch method (toggle vs. hold down)
                 if (crouchEnabled)
@@ -327,7 +322,9 @@ namespace Whilefun.FPEKit {
                 }
 
                 // Crouching stuff
-                previousCharacterHeight = controller.height;
+                previousCharacterHeight = collider.height;
+
+                if (isSwinging) return;
 
                 // Footstep audio special case: If player moves a little, but not a "full stride", there should still be a foot step sound. And if they just stopped walking, there should also be one
                 if (myInputManager.GetButtonDown(FPEInputManager.eFPEInput.FPE_INPUT_HORIZONTAL) || myInputManager.GetButtonDown(FPEInputManager.eFPEInput.FPE_INPUT_VERTICAL) && !movementStarted)
@@ -378,22 +375,23 @@ namespace Whilefun.FPEKit {
                     myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
 
                 }
-
             }
             else
             {
 
                 if (isCrouching)
                 {
-                    gameObject.GetComponent<CharacterController>().height = Mathf.Lerp(gameObject.GetComponent<CharacterController>().height, crouchingHeight, 5 * Time.fixedDeltaTime);
+                    collider.height = Mathf.Lerp(collider.height, crouchingHeight, 5 * Time.fixedDeltaTime);
                 }
                 else
                 {
-                    gameObject.GetComponent<CharacterController>().height = Mathf.Lerp(gameObject.GetComponent<CharacterController>().height, standingHeight, 5 * Time.fixedDeltaTime);
+                    collider.height = Mathf.Lerp(collider.height, standingHeight, 5 * Time.fixedDeltaTime);
                 }
+                
+                if (isSwinging) return;
 
                 // We move the transform to be the x/z and exactly middle of Y relative to controller height change from crouch/stand
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (controller.height - previousCharacterHeight) / 2, gameObject.transform.position.z);
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + (collider.height - previousCharacterHeight) / 2, gameObject.transform.position.z);
 
                 // always move along the camera forward as it is the direction that it being aimed at
                 Vector3 desiredMove = Vector3.zero;
@@ -405,13 +403,13 @@ namespace Whilefun.FPEKit {
 
                 // get a normal for the surface that is being touched to move along it
                 RaycastHit hitInfo;
-                Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo, m_CharacterController.height / 2f);
+                Physics.SphereCast(transform.position, collider.radius, Vector3.down, out hitInfo, collider.height / 2f);
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
                 m_MoveDir.x = desiredMove.x * currentSpeed;
                 m_MoveDir.z = desiredMove.z * currentSpeed;
 
-                if (m_CharacterController.isGrounded)
+                if (isGrounded)
                 {
 
                     m_MoveDir.y = -m_StickToGroundForce;
@@ -429,11 +427,24 @@ namespace Whilefun.FPEKit {
                 }
                 else
                 {
-                    m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
+                    m_MoveDir += Physics.gravity * (m_GravityMultiplier * Time.fixedDeltaTime);
                 }
 
-                m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+                //m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+                rigidbody.MovePosition(rigidbody.position + m_MoveDir * Time.fixedDeltaTime);
 
+            }
+
+        }
+        
+        private void DoGroundCheck()
+        {
+            RaycastHit hitInfo;
+            isGrounded = Physics.SphereCast(transform.position, collider.radius, Vector3.down, out hitInfo, collider.height / 2f);
+
+            if (isGrounded)
+            {
+                m_Jumping = false;
             }
 
         }
@@ -445,7 +456,7 @@ namespace Whilefun.FPEKit {
             if (cameraBobEnabled)
             {
 
-                if (m_CharacterController.velocity.magnitude > 0 && m_CharacterController.isGrounded)
+                if (rigidbody.velocity.magnitude > 0 && isGrounded)
                 {
 
                     float xOffset = CameraBobCurve.Evaluate(bobCycleX);
@@ -547,16 +558,16 @@ namespace Whilefun.FPEKit {
         private void ProgressStepCycle(float speed)
         {
 
-            if (m_CharacterController.velocity.sqrMagnitude > 0.0f && (m_Input.x != 0.0f || m_Input.y != 0.0f))
+            if (rigidbody.velocity.sqrMagnitude > 0.0f && (m_Input.x != 0.0f || m_Input.y != 0.0f))
             {
 
                 if (isCrouching)
                 {
-                    cumulativeStepCycleCount += (m_CharacterController.velocity.magnitude + (speed * (isWalking ? walkStepLengthCrouching : runStepLengthCrouching))) * Time.deltaTime;
+                    cumulativeStepCycleCount += (rigidbody.velocity.magnitude + (speed * (isWalking ? walkStepLengthCrouching : runStepLengthCrouching))) * Time.deltaTime;
                 }
                 else
                 {
-                    cumulativeStepCycleCount += (m_CharacterController.velocity.magnitude + (speed * (isWalking ? walkStepLengthStanding : runStepLengthStanding))) * Time.deltaTime;
+                    cumulativeStepCycleCount += (rigidbody.velocity.magnitude + (speed * (isWalking ? walkStepLengthStanding : runStepLengthStanding))) * Time.deltaTime;
                 }
 
             }
@@ -576,12 +587,12 @@ namespace Whilefun.FPEKit {
         private void PlayFootStepAudio()
         {
 
-            if (!m_CharacterController.isGrounded)
+            if (!isGrounded)
             {
                 return;
             }
 
-            if (m_CharacterController.isGrounded && enableMovementSounds && movementEnabled)
+            if (isGrounded && enableMovementSounds && movementEnabled)
             {
                 footstepSounds.Play(m_AudioSource);
             }
@@ -633,17 +644,12 @@ namespace Whilefun.FPEKit {
             Rigidbody body = hit.collider.attachedRigidbody;
 
             // Don't move the rigidbody if the character is on top of it
-            if (m_CollisionFlags == CollisionFlags.Below)
-            {
-                return;
-            }
-
             if (body == null || body.isKinematic)
             {
                 return;
             }
 
-            body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
+            body.AddForceAtPosition(rigidbody.velocity * 0.1f, hit.point, ForceMode.Impulse);
 
         }
 
@@ -651,14 +657,8 @@ namespace Whilefun.FPEKit {
         {
 
             bool haveHeadRoom = true;
-            //Debug.DrawRay(gameObject.transform.position, gameObject.transform.up * (standingHeight - (controller.height/2.0f)), Color.red);
-
-            RaycastHit headRoomHit;
-            if (Physics.Raycast(gameObject.transform.position, gameObject.transform.up, out headRoomHit, (standingHeight - (controller.height / 2.0f))))
-            {
-                //Debug.Log("Headroom hit " + headRoomHit.collider.transform.name);
-                haveHeadRoom = false;
-            }
+            Debug.DrawRay(gameObject.transform.position, gameObject.transform.up * (standingHeight - (collider.height/2.0f)), Color.red);
+            
 
             return haveHeadRoom;
 

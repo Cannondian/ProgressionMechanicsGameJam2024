@@ -609,7 +609,7 @@ namespace Whilefun.FPEKit
             }
             else
             {
-                stateData = thePlayer.GetComponent<FPEFirstPersonController>().getPlayerStateDataForSavedGame();
+                stateData = thePlayer.GetComponent<PlayerController>().getPlayerStateDataForSavedGame();
             }
 
             return stateData;
@@ -631,7 +631,7 @@ namespace Whilefun.FPEKit
             }
             else
             {
-                thePlayer.GetComponent<FPEFirstPersonController>().restorePlayerStateFromSavedGame(stateData);
+                thePlayer.GetComponent<PlayerController>().restorePlayerStateFromSavedGame(stateData);
             }
 
         }
