@@ -42,7 +42,7 @@ public class DemoForcePlayerLookAt : MonoBehaviour
             {
 
                 currentFocusPosition = Vector3.Lerp(currentFocusPosition, transform.position, focusLerpFactor * Time.deltaTime);
-                FPEPlayer.Instance.GetComponent<PlayerController>().forcePlayerLookToPosition(currentFocusPosition);
+                //FPEPlayer.Instance.GetComponent<PlayerController>().forcePlayerLookToPosition(currentFocusPosition);
 
                 gazeCounter -= Time.deltaTime;
 
@@ -66,7 +66,7 @@ public class DemoForcePlayerLookAt : MonoBehaviour
         gazeCounter = gazeDurationInSeconds;
         focusLerpFactor = focusChangeLerpFactor;
         delayCounter = delayInSeconds;
-        currentFocusPosition = FPEPlayer.Instance.GetComponent<PlayerController>().GetCurrentPlayerFocalPoint();
+       // currentFocusPosition = FPEPlayer.Instance.GetComponent<PlayerController>().GetCurrentPlayerFocalPoint();
 
     }
 

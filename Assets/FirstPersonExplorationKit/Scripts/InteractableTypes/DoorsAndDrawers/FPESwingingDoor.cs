@@ -610,7 +610,7 @@ namespace Whilefun.FPEKit
                 FPEPlayer.Instance.gameObject.transform.position = Vector3.Lerp(FPEPlayer.Instance.gameObject.transform.position, currentSafeZoneTargetPosition, playerAutoMoveUnitsPerSecond * Time.deltaTime);
 
                 currentSafeLookTargetPosition = Vector3.Lerp(currentSafeLookTargetPosition, doorActionLookTarget.position, playerAutoMoveLookPanSpeed * Time.deltaTime);
-                FPEPlayer.Instance.GetComponent<PlayerController>().forcePlayerLookToPosition(currentSafeLookTargetPosition);
+                //FPEPlayer.Instance.GetComponent<PlayerController>().forcePlayerLookToPosition(currentSafeLookTargetPosition);
 
             }
 
