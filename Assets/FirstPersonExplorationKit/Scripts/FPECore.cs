@@ -108,7 +108,6 @@ namespace Whilefun.FPEKit
 
             if (startLocation != null)
             {
-
                 player.transform.position = startLocation.gameObject.transform.position;
                 Quaternion flatRotation = Quaternion.Euler(0.0f, startLocation.gameObject.transform.rotation.eulerAngles.y, 0.0f);
                 player.transform.rotation = flatRotation;
