@@ -12110,8 +12110,8 @@ MonoBehaviour:
   fpeController: {fileID: 0}
   orientation: {fileID: 0}
   rb: {fileID: 0}
-  horizontalThrustForce: 2000
-  forwardThrustForce: 4000
+  horizontalThrustForce: 1000
+  forwardThrustForce: 2000
   extendCableSpeed: 20
   predictionSphereCastRadius: 3
   predictionPoint: {fileID: 1661397220}
