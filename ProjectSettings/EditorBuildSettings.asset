@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mauro_Whitebox.unity
     guid: db461bf7edda44e2bb7e69aa160cc090
+  - enabled: 1
+    path: Assets/Scenes/Mauro_Whitebox2.unity
+    guid: 7f308a2e84333479281035f584ca1f26
   m_configObjects: {}
