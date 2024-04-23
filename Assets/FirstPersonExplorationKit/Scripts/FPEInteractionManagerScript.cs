@@ -378,10 +378,6 @@ namespace Whilefun.FPEKit
                     // Already holding an object //
                     if (currentHeldObject)
                     {
-                        if (!currentHeldObject.GetComponent<FPEInteractablePickupScript>().canBePutBack)
-                        {
-                            return;
-                        }
 
                         // If I was looking at a valid Put Back location, put the object back
                         if (currentPutbackObject)
@@ -2294,14 +2290,14 @@ namespace Whilefun.FPEKit
         // If using another Character Controller (UFPS, etc.) substitute mouselook disable functionality
         private void disableMouseLook()
         {
-            thePlayer.GetComponent<FPEMouseLook>().enableMouseLook = false;
+           // thePlayer.GetComponent<FPEMouseLook>().enableMouseLook = false;
             mouseLookEnabled = false;
         }
         // Unlocks mouse look so we can move mouse to look when walking/moving normally.
         // If using another Character Controller (UFPS, etc.) substitute mouselook enable functionality
         private void enableMouseLook()
         {
-            thePlayer.GetComponent<FPEMouseLook>().enableMouseLook = true;
+            //thePlayer.GetComponent<FPEMouseLook>().enableMouseLook = true;
             mouseLookEnabled = true;
         }
         // Locks movement of Character Controller. 
@@ -2389,7 +2385,7 @@ namespace Whilefun.FPEKit
         /// <param name="angles">The angles or bounds that will limit player view, +/-</param>
         public void RestrictPlayerLookFromCurrentView(Vector2 angles)
         {
-            thePlayer.GetComponent<FPEMouseLook>().enableLookRestriction(angles);
+            //thePlayer.GetComponent<FPEMouseLook>().enableLookRestriction(angles);
         }
 
         /// <summary>
@@ -2397,7 +2393,7 @@ namespace Whilefun.FPEKit
         /// </summary>
         public void FreePlayerLookFromCurrentViewRestrictions()
         {
-            thePlayer.GetComponent<FPEMouseLook>().disableLookRestriction();
+            //thePlayer.GetComponent<FPEMouseLook>().disableLookRestriction();
         }
 
         /// <summary>

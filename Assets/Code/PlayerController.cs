@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
         myMouseLook = GetComponent<FPEMouseLook>();
-        myMouseLook.Init(transform, cam.transform);
+        //myMouseLook.Init(transform, cam.transform);
         rb.freezeRotation = true;
 
         readyToJump = true;
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
-        UpdateMouseLook();
+        //UpdateMouseLook();
         MyInput();
         SpeedControl();
         StateHandler();
@@ -103,10 +103,6 @@ public class PlayerController : MonoBehaviour
         //TextStuff();
     }
     
-    private void UpdateMouseLook()
-    {
-        myMouseLook.LookRotation(transform, cam.transform);
-    }
 
     private void FixedUpdate()
     {
@@ -280,8 +276,6 @@ public class PlayerController : MonoBehaviour
     {
         enableMovementOnNextTouch = true;
         rb.velocity = velocityToSet;
-
-        cam.fieldOfView = grappleFov;
     }
 
     public void ResetRestrictions()

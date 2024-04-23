@@ -43,8 +43,6 @@ namespace Whilefun.FPEKit
         public enum eRotationType { FREE, HORIZONTAL, VERTICAL, NONE };
         [Tooltip("FREE - Free rotation in both axes.\nHORIZONTAL - Only rotate side to side.\nVERTICAL - Only rotate up and down.\nNONE - No rotation allowed.")]
         public eRotationType rotationLockType = eRotationType.FREE;
-        
-        public bool canBePutBack = true;
 
         [Header("Sound Management")]
         [Tooltip("Uncheck this if you don't want this object to make sounds")]
@@ -160,7 +158,7 @@ namespace Whilefun.FPEKit
         // Note: Pickup objects can only every be picked up if player's hands are empty
         public override bool interactionsAllowedWhenHoldingObject()
         {
-            return false;
+            return true;
         }
 
         void OnCollisionEnter()

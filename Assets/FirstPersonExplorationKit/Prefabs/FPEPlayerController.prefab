@@ -40,8 +40,9 @@ Transform:
   - {fileID: 488750}
   - {fileID: 4467325329915926}
   - {fileID: 449588}
-  - {fileID: 449582}
   - {fileID: 449586}
+  - {fileID: 6947938728581767205}
+  - {fileID: 449582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8249598
@@ -164,10 +165,130 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e60a97f2c87ae41b6cdc1055d78cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clampVerticalRotation: 1
-  MinimumX: -80
-  MaximumX: 80
-  enableMouseLook: 1
+  sensX: 10
+  sensY: 10
+  multiplier: 0.1
+  orientation: {fileID: 6947938728581767205}
+  camHolder: {fileID: 449582}
+  pm: {fileID: 6420013502490095992}
+  useFluentFov: 1
+  rb: {fileID: 8376404003171212910}
+  cam: {fileID: 2049600}
+  minMovementSpeed: 0
+  maxMovementSpeed: 0
+  minFov: 0
+  maxFov: 0
+  fovCurvenew:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.5
+      value: -1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  cameraBobEnabled: 1
+  m_JumpBob:
+    BobDuration: 0
+    BobAmount: 0
+  CameraBobCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.016666412
+      value: -0.6886749
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5249939
+      value: 0.08491516
+      inSlope: 1.2170826
+      outSlope: 1.2170826
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.32786065
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.92500305
+      value: 0.65567017
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.425003
+      value: 0.8160362
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.9500122
+      value: 0.91981506
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bobRangeStanding: {x: 0.05, y: 0.1}
+  bobRangeCrouching: {x: 0.2, y: 0.2}
+  stepInterval: 5
+  cameraOffsetStanding: {x: 0, y: 0.8, z: 0}
+  cameraOffsetCrouching: {x: 0, y: 0.8, z: 0}
 --- !u!54 &8376404003171212910
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -246,10 +367,11 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4294967295
+  grounded: 0
   maxSlopeAngle: 45
-  cam: {fileID: 0}
+  cam: {fileID: 2049600}
   grappleFov: 95
-  orientation: {fileID: 449580}
+  orientation: {fileID: 6947938728581767205}
   state: 0
   freeze: 0
   activeGrapple: 0
@@ -282,8 +404,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149582}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -307,7 +429,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -327,7 +449,7 @@ Camera:
     height: 1
   near clip plane: 0.25
   far clip plane: 1000
-  field of view: 60
+  field of view: 48.422493
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1618,4 +1740,35 @@ Transform:
   m_Children:
   - {fileID: 4561626390380796}
   m_Father: {fileID: 449582}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5676343183903919081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6947938728581767205}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6947938728581767205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676343183903919081}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.2, y: 0.589, z: 0.6088467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 449580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

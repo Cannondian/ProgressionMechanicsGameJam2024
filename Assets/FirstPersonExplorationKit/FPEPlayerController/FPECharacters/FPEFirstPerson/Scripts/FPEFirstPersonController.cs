@@ -175,7 +175,7 @@ namespace Whilefun.FPEKit {
                 Debug.LogError("FPEFirstPersonController:: Cannot find FPEMouseLook component on the player! Did you break the prefab?");
             }
 
-            myMouseLook.Init(transform, m_Camera.transform);
+            //myMouseLook.Init(transform, m_Camera.transform);
 
             myInputManager = FPEInputManager.Instance;
 
@@ -204,9 +204,9 @@ namespace Whilefun.FPEKit {
                     {
 
                         transform.position = targetDockPosition;
-                        myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
-                        myMouseLook.enableLookRestriction(targetMaxAngles);
-                        myMouseLook.enableMouseLook = true;
+                       // myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
+                       // myMouseLook.enableLookRestriction(targetMaxAngles);
+                        //myMouseLook.enableMouseLook = true;
                         currentDockingState = ePlayerDockingState.IDLE;
 
                     }
@@ -219,9 +219,9 @@ namespace Whilefun.FPEKit {
                     {
 
                         transform.position = targetDockPosition;
-                        myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
-                        myMouseLook.disableLookRestriction();
-                        myMouseLook.enableMouseLook = true;
+                      //  myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
+                      //  myMouseLook.disableLookRestriction();
+                      //  myMouseLook.enableMouseLook = true;
                         currentDockingState = ePlayerDockingState.IDLE;
                         playerDocked = false;
 
@@ -365,14 +365,14 @@ namespace Whilefun.FPEKit {
                 {
 
                     transform.position = Vector3.Lerp(transform.position, targetDockPosition, dockingLerpFactor * Time.fixedDeltaTime);
-                    myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
+                   // myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
 
                 }
                 else if (currentDockingState == ePlayerDockingState.UNDOCKING)
                 {
 
                     transform.position = Vector3.Lerp(transform.position, targetDockPosition, dockingLerpFactor * Time.fixedDeltaTime);
-                    myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
+                    //myMouseLook.LookAtPosition(transform, m_Camera.transform, targetFocalPoint);
 
                 }
             }
@@ -635,7 +635,7 @@ namespace Whilefun.FPEKit {
 
         private void RotateView()
         {
-            myMouseLook.LookRotation(transform, m_Camera.transform);
+            //myMouseLook.LookRotation(transform, m_Camera.transform);
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -688,8 +688,8 @@ namespace Whilefun.FPEKit {
             {
                 
                 transform.position = dockTransform.position;
-                myMouseLook.LookAtPosition(transform, m_Camera.transform, focalPoint);
-                myMouseLook.enableLookRestriction(maxAngleFromFocalPoint);
+                //myMouseLook.LookAtPosition(transform, m_Camera.transform, focalPoint);
+                //myMouseLook.enableLookRestriction(maxAngleFromFocalPoint);
 
             }
 
@@ -706,7 +706,7 @@ namespace Whilefun.FPEKit {
 
                     targetDockPosition = previousWorldPosition;
                     targetFocalPoint = previousFocalPoint;
-                    myMouseLook.enableMouseLook = false;
+                    //myMouseLook.enableMouseLook = false;
                     currentDockingState = ePlayerDockingState.UNDOCKING;
 
                 }
@@ -714,8 +714,8 @@ namespace Whilefun.FPEKit {
                 {
 
                     transform.position = previousWorldPosition;
-                    myMouseLook.disableLookRestriction();
-                    myMouseLook.LookAtPosition(transform, m_Camera.transform, previousFocalPoint);
+                    //myMouseLook.disableLookRestriction();
+                    //myMouseLook.LookAtPosition(transform, m_Camera.transform, previousFocalPoint);
                     playerDocked = false;
 
                 }
@@ -780,7 +780,7 @@ namespace Whilefun.FPEKit {
         /// <param name="position">The position to look at</param>
         public void forcePlayerLookToPosition(Vector3 position)
         {
-            gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, position);
+           // gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, position);
         }
 
         #endregion
@@ -815,7 +815,7 @@ namespace Whilefun.FPEKit {
             // Player position and look focus
             transform.position = data.playerPosition();
             transform.rotation = data.playerRotation();
-            gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, data.playerLookAt());
+            //gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, data.playerLookAt());
             isCrouching = data.Crouching;
             playerDocked = data.Docked;
             targetMaxAngles = data.MaxAngles;
@@ -845,7 +845,7 @@ namespace Whilefun.FPEKit {
                 if(foundDock != null)
                 {
 
-                    gameObject.GetComponent<FPEMouseLook>().enableLookRestriction(targetMaxAngles);
+                    //gameObject.GetComponent<FPEMouseLook>().enableLookRestriction(targetMaxAngles);
                     FPEInteractionManagerScript.Instance.restoreCurrentDockFromSavedGame(foundDock);
                     isCrouching = false;
 
@@ -857,7 +857,7 @@ namespace Whilefun.FPEKit {
                     Debug.LogError("FPEFirstPersonController.restorePlayerStateFromSavedGame():: Saved dock named '"+ data.DockName + "' could not be found in the scene. Restoring player to undocked state in last known good world position instead. Your scene must have changed, or this is an old saved game that is no longer compatible with the most recent version of your game or scene.");
                     transform.position = data.PreviousWorldPos;
                     transform.rotation = Quaternion.identity;
-                    gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, data.PreviousFocalPos);
+                    //gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, data.PreviousFocalPos);
                     playerDocked = false;
                     isCrouching = false;
 
@@ -866,7 +866,7 @@ namespace Whilefun.FPEKit {
             }
 
             // We ALWAYS assume the player can move their mouse once a game is loaded we restore player state
-            gameObject.GetComponent<FPEMouseLook>().enableMouseLook = true;
+            //gameObject.GetComponent<FPEMouseLook>().enableMouseLook = true;
 
         }
 
@@ -876,7 +876,7 @@ namespace Whilefun.FPEKit {
 
             // Create a neutral "look forward" position based on player's transform position and rotation
             Vector3 neutralLookAt = transform.position + m_Camera.transform.localPosition + (transform.forward * 5.0f);
-            gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, neutralLookAt);
+            //gameObject.GetComponent<FPEMouseLook>().LookAtPosition(transform, m_Camera.transform, neutralLookAt);
 
         }
 
@@ -887,7 +887,7 @@ namespace Whilefun.FPEKit {
         public void resetPlayerForMainMenu()
         {
 
-            gameObject.GetComponent<FPEMouseLook>().disableLookRestriction();
+            //gameObject.GetComponent<FPEMouseLook>().disableLookRestriction();
             playerDocked = false;
             isCrouching = false;
 

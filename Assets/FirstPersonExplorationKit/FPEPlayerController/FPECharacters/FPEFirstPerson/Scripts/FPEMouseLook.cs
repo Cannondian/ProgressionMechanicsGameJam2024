@@ -6,182 +6,176 @@ namespace Whilefun.FPEKit {
     public class FPEMouseLook : MonoBehaviour
     {
 
-        public bool clampVerticalRotation = true;
-        public float MinimumX = -80.0f;
-        public float MaximumX = 80.0f;
+        public float sensX;
+        public float sensY;
+        public float multiplier;
 
-        private Quaternion m_CharacterTargetRot;
-        private Quaternion m_CameraTargetRot;
+        public Transform orientation;
+        public Transform camHolder;
+        public PlayerController pm;
 
-        [Header("Custom Flags")]
-        [Tooltip("Toggle mouse look on and off")]
-        public bool enableMouseLook = true;
+        float xRotation;
+        float yRotation;
 
-        // View limiting stuff (for "docked" type interactions)
-        private bool restrictLook = false;
-        private Vector2 lookRestrictionAngles = Vector2.zero;
-        private Vector2 rotationSum = Vector2.zero;
-        private Vector2 lastRotationChanges = Vector2.zero;
-
-        private FPEInputManager inputManager = null;
-
-
-        public void Init(Transform character, Transform camera)
-        {
-
-            m_CharacterTargetRot = character.localRotation;
-            m_CameraTargetRot = camera.localRotation;
-
-        }
-
-        void Start()
-        {
-
-            inputManager = FPEInputManager.Instance;
-
-            if (!inputManager)
-            {
-                Debug.LogError("FPEMouseLook:: Cannot find an instance of FPEInputManager in the scene. Mouse look will not function correctly!");
-            }
-
-        }
-
+        [Header("Fov")] public bool useFluentFov;
+        public Rigidbody rb;
+        public Camera cam;
+        public float minMovementSpeed;
+        public float maxMovementSpeed;
+        public float minFov;
+        public float maxFov;
+        private FPEFOVKick fovKick;
+        [SerializeField] private AnimationCurve fovCurvenew = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f), new Keyframe(1.5f, -1f), new Keyframe(2f, 0f));
         
-        public void LookRotation(Transform character, Transform camera)
+        [Header("View Bob")]
+        [SerializeField]
+        private bool cameraBobEnabled = true;
+        [SerializeField]
+        private FPELerpControlledBob m_JumpBob = new FPELerpControlledBob();
+        [SerializeField]
+        private AnimationCurve CameraBobCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f), new Keyframe(1.5f, -1f), new Keyframe(2f, 0f));
+        [SerializeField]
+        private Vector2 bobRangeStanding = new Vector2(0.05f, 0.1f);
+        [SerializeField]
+        private Vector2 bobRangeCrouching = new Vector2(0.2f, 0.2f);
+        
+        private float bobCurveTime = 0.0f;
+        private float bobCycleX = 0.0f;
+        private float bobCycleY = 0.0f;
+        private float cumulativeStepCycleCount = 0.0f;
+        private float nextStepInCycle = 0.0f;
+        [SerializeField, Tooltip("Approximate unit length of complete stride (left and right foot) of player walk. Influenced by current speed and movement type (e.g. walking vs. running)")]
+        private float stepInterval = 5.0f;
+        
+        [SerializeField]
+        private Vector3 cameraOffsetStanding = Vector3.zero;
+        [SerializeField]
+        private Vector3 cameraOffsetCrouching = Vector3.zero;
+
+        private PlayerController.MovementState lastMoveState;
+
+        private void Start()
+        {
+           // Cursor.lockState = CursorLockMode.Locked;
+           // Cursor.visible = false;
+           fovKick = new FPEFOVKick();
+           fovKick.IncreaseCurve = fovCurvenew;
+           fovKick.Setup(cam);
+        }
+
+        private void Update()
+        {
+            // get mouse input
+            float mouseX = Input.GetAxisRaw("Mouse X") * sensX;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * sensY;
+
+            yRotation += mouseX * multiplier;
+
+            xRotation -= mouseY * multiplier;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+            // rotate cam and orientation
+            camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+            
+            UpdateCameraPosition(rb.velocity.magnitude);
+
+            if (useFluentFov) HandleFov();
+            lastMoveState = pm.state;
+        }
+
+        private void HandleFov()
+        {
+            if (pm.state == lastMoveState) return;
+            
+            if (pm.state is PlayerController.MovementState.sprinting or PlayerController.MovementState.swinging)
+            {
+                StartCoroutine(fovKick.FOVKickUp());
+            }
+            else if (lastMoveState is PlayerController.MovementState.sprinting or PlayerController.MovementState.swinging)
+            {
+                StartCoroutine(fovKick.FOVKickDown());
+            }
+        }
+        
+        private void UpdateCameraPosition(float speed)
         {
 
-            if (enableMouseLook)
+            if (cameraBobEnabled)
             {
 
-                lastRotationChanges.x = inputManager.GetAxis(FPEInputManager.eFPEInput.FPE_INPUT_MOUSELOOKY);
-                lastRotationChanges.y = inputManager.GetAxis(FPEInputManager.eFPEInput.FPE_INPUT_MOUSELOOKX);
-
-                // If there was no mouse input use gamepad instead
-                if (lastRotationChanges.x == 0 & lastRotationChanges.y == 0)
+                if (rb.velocity.magnitude > 0 && pm.grounded)
                 {
 
-                    // Note: We scale our gamepad by delta time because it's not a "change since last frame" like mouse 
-                    // input, so we need to simulate that ourselves.
-                    lastRotationChanges.x = inputManager.GetAxis(FPEInputManager.eFPEInput.FPE_INPUT_LOOKY) * Time.deltaTime;
-                    lastRotationChanges.y = inputManager.GetAxis(FPEInputManager.eFPEInput.FPE_INPUT_LOOKX) * Time.deltaTime;
+                    float xOffset = CameraBobCurve.Evaluate(bobCycleX);
+                    float yOffset = CameraBobCurve.Evaluate(bobCycleY);
 
-                }
+                    Vector3 newCameraPosition = cameraOffsetStanding;
+                    Vector2 bobRange = bobRangeStanding;
 
-                if (restrictLook)
-                {
-                    
-                    if ((rotationSum.y + lastRotationChanges.y) > lookRestrictionAngles.y)
+                    if (pm.state == PlayerController.MovementState.crouching)
                     {
-                        lastRotationChanges.y = (lookRestrictionAngles.y - rotationSum.y);
-                    }
-                    else if ((rotationSum.y + lastRotationChanges.y) < -lookRestrictionAngles.y)
-                    {
-                        lastRotationChanges.y = (-lookRestrictionAngles.y - rotationSum.y);
+                        newCameraPosition = cameraOffsetCrouching;
+                        bobRange = bobRangeCrouching;
                     }
 
-                    rotationSum.y += lastRotationChanges.y;
+                    newCameraPosition.y += (yOffset * bobRange.y) - m_JumpBob.Offset();
+                    newCameraPosition.x += xOffset * bobRange.x;
 
-                    if ((rotationSum.x + lastRotationChanges.x) > lookRestrictionAngles.x)
+                    // Update bob cycle
+                    float VerticalToHorizontalRatioStanding = 2.0f;
+                    bobCycleX += (speed * Time.deltaTime) / stepInterval;
+                    bobCycleY += ((speed * Time.deltaTime) / stepInterval) * VerticalToHorizontalRatioStanding;
+
+                    if (bobCycleX > bobCurveTime)
                     {
-                        lastRotationChanges.x = (lookRestrictionAngles.x - rotationSum.x);
+                        bobCycleX = bobCycleX - bobCurveTime;
                     }
-                    else if ((rotationSum.x + lastRotationChanges.x) < -lookRestrictionAngles.x)
+                    if (bobCycleY > bobCurveTime)
                     {
-                        lastRotationChanges.x = (-lookRestrictionAngles.x - rotationSum.x);
+                        bobCycleY = bobCycleY - bobCurveTime;
                     }
 
-                    rotationSum.x += lastRotationChanges.x;
+                    // Lastly, lerp toward our new target camera position
+                    camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, newCameraPosition, 0.1f);
 
-                }
 
-                m_CharacterTargetRot *= Quaternion.Euler(0.0f, lastRotationChanges.y, 0.0f);
-                m_CameraTargetRot *= Quaternion.Euler(-lastRotationChanges.x, 0.0f, 0.0f);
-
-                // Only clamp when not restricting look
-                if (!restrictLook && clampVerticalRotation)
-                {
-                    m_CameraTargetRot = ClampRotationAroundXAxis(m_CameraTargetRot);
-                }
-
-                if (inputManager.LookSmoothing)
-                {
-                    character.localRotation = Quaternion.Slerp(character.localRotation, m_CharacterTargetRot, inputManager.LookSmoothFactor * Time.deltaTime);
-                    camera.localRotation = Quaternion.Slerp(camera.localRotation, m_CameraTargetRot, inputManager.LookSmoothFactor * Time.deltaTime);
                 }
                 else
                 {
-                    character.localRotation = m_CharacterTargetRot;
-                    camera.localRotation = m_CameraTargetRot;
+
+                    // If we aren't actively moving or bobbing, just lerp toward our appropriate camera position
+                    if (pm.state == PlayerController.MovementState.crouching)
+                    {
+                        Vector3 newCameraPosition = cameraOffsetCrouching;
+                        newCameraPosition.y -= m_JumpBob.Offset();
+                        camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, newCameraPosition, 0.1f);
+                    }
+                    else
+                    {
+                        Vector3 newCameraPosition = cameraOffsetStanding;
+                        newCameraPosition.y -= m_JumpBob.Offset();
+                        camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, newCameraPosition, 0.1f);
+                    }
+
+                }
+
+            }
+            else
+            {
+
+                if (pm.state == PlayerController.MovementState.crouching)
+                {
+                    camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, cameraOffsetCrouching, 0.1f);
+                }
+                else
+                {
+                    camHolder.transform.localPosition = Vector3.Lerp(camHolder.transform.localPosition, cameraOffsetStanding, 0.1f);
                 }
 
             }
 
-        }
-
-
-        Quaternion ClampRotationAroundXAxis(Quaternion q)
-        {
-
-            q.x /= q.w;
-            q.y /= q.w;
-            q.z /= q.w;
-            q.w = 1.0f;
-
-            float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.x);
-            angleX = Mathf.Clamp(angleX, MinimumX, MaximumX);
-            q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
-
-            return q;
 
         }
-
-        /// <summary>
-        /// Makes player camera look at a position
-        /// </summary>
-        /// <param name="character">Character's transform</param>
-        /// <param name="camera">Character's 'Main' camera transform</param>
-        /// <param name="focalPoint">The world position of the focal point to make player look at</param>
-        public void LookAtPosition(Transform character, Transform camera, Vector3 focalPoint)
-        {
-
-            // Make character face target //
-            Vector3 relativeCharPosition = focalPoint - character.position;
-            Quaternion rotation = Quaternion.LookRotation(relativeCharPosition);
-            Vector3 flatCharRotation = rotation.eulerAngles;
-            flatCharRotation.x = 0.0f;
-            flatCharRotation.z = 0.0f;
-            character.localRotation = Quaternion.Euler(flatCharRotation);
-            // Key: make target rotation our current rotation :)
-            m_CharacterTargetRot = character.localRotation;
-
-            // Make Camera face target //
-            Vector3 relativeCamPosition = focalPoint - camera.position;
-            Quaternion camRotation = Quaternion.LookRotation(relativeCamPosition);
-            Vector3 flatCamRotation = camRotation.eulerAngles;
-            flatCamRotation.y = 0.0f;
-            flatCamRotation.z = 0.0f;
-            camera.localRotation = Quaternion.Euler(flatCamRotation);
-            // Key: Make cam target rotation our current cam rotation
-            m_CameraTargetRot = camera.localRotation;
-
-        }
-        
-        public void enableLookRestriction(Vector2 maxAnglesFromOrigin)
-        {
-
-            // Note: we flip these because 'x' rotation means 'horizontal' to the user, but it really translates to 'tilt' which is vertical
-            lookRestrictionAngles.x = maxAnglesFromOrigin.y;
-            lookRestrictionAngles.y = maxAnglesFromOrigin.x;
-            rotationSum = Vector2.zero;
-            restrictLook = true;
-
-        }
-
-        public void disableLookRestriction()
-        {
-            restrictLook = false;
-        }
-
     }
-
 }

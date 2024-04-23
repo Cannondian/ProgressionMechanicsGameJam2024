@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Whilefun.FPEKit;
 
-public class SwingingDone : MonoBehaviour
+public class Hookshot : MonoBehaviour
 {
     [Header("References")]
     public LineRenderer lr;
@@ -117,6 +117,8 @@ public class SwingingDone : MonoBehaviour
         // return if predictionHit not found
         if (predictionHit.point == Vector3.zero) return;
         
+        Debug.Log("we are swinging");
+        
         fpeController.ResetRestrictions();
         fpeController.swinging = true;
 
@@ -150,7 +152,6 @@ public class SwingingDone : MonoBehaviour
 
     private void OdmGearMovement()
     {
-        Debug.Log("we are sewinging");
         // right
         if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * (horizontalThrustForce * Time.deltaTime));
         // left
