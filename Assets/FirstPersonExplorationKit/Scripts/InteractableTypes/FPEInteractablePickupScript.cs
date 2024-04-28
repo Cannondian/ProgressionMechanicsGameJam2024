@@ -273,6 +273,24 @@ namespace Whilefun.FPEKit
         public void drop()
         {
             pickedUp = false;
+            
+            this.transform.parent = null;
+            
+            Collider[] objectColliders = this.GetComponentsInChildren<Collider>();
+
+            foreach (Collider c in objectColliders)
+            {
+                c.isTrigger = false;
+            }
+            this.GetComponent<Rigidbody>().isKinematic = false;
+            this.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+            Transform[] objectTransforms = this.GetComponentsInChildren<Transform>();
+
+            foreach (Transform t in objectTransforms)
+            {
+                t.gameObject.layer = LayerMask.NameToLayer("FPEPickupObjects");
+            }
         }
 
         // This function is called by FPEInteractionManager when the player starts examining an object
