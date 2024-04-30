@@ -17,26 +17,33 @@ namespace Code
             //_rigidbody.isKinematic = true;
             _rigidbody.Sleep();
         }
+        
+        public void Explode()
+        {
+            StartCoroutine(RunExplosion());
+        }
 
 
-        public IEnumerator Explode()
+        private IEnumerator RunExplosion()
         {
             _rigidbody.WakeUp();
             
             yield return new WaitForSeconds(1f);
             
-            yield return StartCoroutine(FadeOut());
-
+            StartCoroutine(FadeOutAlpha());
         }
         
-        private IEnumerator FadeOut()
+        private IEnumerator FadeOutAlpha()
         {
             float duration = 2f;
             float elapsedTime = 0f;
-            Color initialColor = _meshRenderer.material.color;
+            Color startColor = _meshRenderer.material.color;
+            float alpha = startColor.a;
             while (elapsedTime < duration)
             {
-                _meshRenderer.material.color = Color.Lerp(initialColor, Color.clear, elapsedTime / duration);
+                float t = elapsedTime / duration;
+                Color newColor = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(alpha, 0, t));
+                _meshRenderer.material.color = newColor;
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }

@@ -151,7 +151,7 @@ MonoBehaviour:
   _projectedThrowForce: 0
   _realChargePrefab: {fileID: 2030364218951117257, guid: 6d30c17bc0e0ca241adc182c389460e5,
     type: 3}
-  _holdTimeBeforeThrow: 2
+  _holdTimeBeforeThrow: 1
   _baseThrowForce: 3
 --- !u!114 &4582052098249698242
 MonoBehaviour:

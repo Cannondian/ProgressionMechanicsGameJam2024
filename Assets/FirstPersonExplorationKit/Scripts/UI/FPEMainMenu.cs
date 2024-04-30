@@ -2,6 +2,7 @@
 
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace Whilefun.FPEKit
 {
@@ -150,7 +151,7 @@ namespace Whilefun.FPEKit
 
         public void continueGame()
         {
-            FPESaveLoadManager.Instance.LoadGame();
+            SceneManager.LoadScene("Mauro");
         }
 
         public void exitGame()

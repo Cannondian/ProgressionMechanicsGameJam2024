@@ -45,7 +45,7 @@ namespace Code
             foreach (var explodable in _nearbyExplodables)
             {
                 Debug.Log("Affected explodable: " + explodable.name);
-                StartCoroutine(explodable.Explode());
+                explodable.Explode();
             }
             Destroy(this.gameObject);
         }

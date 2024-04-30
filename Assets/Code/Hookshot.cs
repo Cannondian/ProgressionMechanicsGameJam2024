@@ -11,6 +11,7 @@ public class Hookshot : MonoBehaviour
     public Transform gunTip, cam, player;
     public LayerMask whatIsGrappleable;
     public PlayerController fpeController;
+    [SerializeField] private Transform hook;
 
     [Header("Swinging")]
     private float maxSwingDistance = 25f;
@@ -34,11 +35,18 @@ public class Hookshot : MonoBehaviour
     
     private bool isActive = false;
     private Vector3 remainingForce;
-    
+    private Vector3 localHookPosition;
+
+
+    private void Awake()
+    {
+        localHookPosition = hook.localPosition;
+    }
+
     public void OnPickup()
     {
         player = FindObjectOfType<PlayerController>().transform;
-        cam = player.GetComponentInChildren<Camera>().transform;
+        cam = Camera.main.transform;
         rb = player.GetComponent<Rigidbody>();
         orientation = player.transform;
         fpeController = player.GetComponent<PlayerController>();
@@ -146,6 +154,7 @@ public class Hookshot : MonoBehaviour
     {
         fpeController.swinging = false;   
         lr.positionCount = 0;
+        hook.position = this.transform.position + localHookPosition;
 
         Destroy(joint);
     }
@@ -174,7 +183,7 @@ public class Hookshot : MonoBehaviour
         // extend cable
         if (Input.GetKey(KeyCode.S))
         {
-            float extendedDistanceFromPoint = Vector3.Distance(transform.position, swingPoint) + extendCableSpeed;
+            float extendedDistanceFromPoint = Vector3.Distance(transform.position, swingPoint);
 
             joint.maxDistance = extendedDistanceFromPoint * 0.8f;
             joint.minDistance = extendedDistanceFromPoint * 0.25f;
@@ -189,9 +198,10 @@ public class Hookshot : MonoBehaviour
         if (!joint) return;
 
         currentGrapplePosition = 
-            Vector3.Lerp(currentGrapplePosition, swingPoint, Time.deltaTime * 8f);
+            Vector3.Lerp(currentGrapplePosition, swingPoint, Time.deltaTime * extendCableSpeed);
 
         lr.SetPosition(0, gunTip.position);
         lr.SetPosition(1, currentGrapplePosition);
+        hook.position = currentGrapplePosition;
     }
 }
