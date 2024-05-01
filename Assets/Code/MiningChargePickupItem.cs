@@ -3,7 +3,6 @@ using Whilefun.FPEKit;
 
 namespace Code
 {
-    [RequireComponent(typeof(FPEInteractablePickupScript))]
     public class MiningChargePickupItem : MonoBehaviour
     {
         public float _projectedThrowForce;
@@ -55,7 +54,7 @@ namespace Code
             _chargeCount--;
             if (_chargeCount <= 0)
             {
-                this.GetComponent<FPEInteractablePickupScript>().drop();
+                GameCore.PlayerInventory.DropItem(gameObject);
                 Destroy(gameObject);
             }
         }
