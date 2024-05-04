@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mauro.unity
     guid: 27cd507d0658a47738fffd0dd6c2f864
+  - enabled: 1
+    path: Assets/Scenes/Part0.unity
+    guid: b0d743b23c0fc478ca2e15ea0aba705e
+  - enabled: 1
+    path: Assets/Scenes/VerticalSlice.unity
+    guid: b15bb46d1a24247009e677ed11b7387b
   m_configObjects: {}
