@@ -152,6 +152,7 @@ Transform:
   m_Children:
   - {fileID: 5643615159369237190}
   - {fileID: 643889973470204226}
+  - {fileID: 4916934909495349761}
   - {fileID: 5727810091884075347}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -274,7 +275,8 @@ MonoBehaviour:
     m_Bits: 16384
   fpeController: {fileID: 0}
   hook: {fileID: 643889973470204226}
-  maxSwingDistance: 10
+  hookStartPos: {fileID: 4916934909495349761}
+  maxSwingDistance: 5
   orientation: {fileID: 0}
   rb: {fileID: 0}
   horizontalThrustForce: 800
@@ -436,6 +438,37 @@ MonoBehaviour:
       m_Calls: []
   holdPositionOffset: {x: 0.22, y: -0.33, z: -0.15}
   holdRotationOffset: {x: 0, y: 0, z: 0}
+--- !u!1 &7821375519085651261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4916934909495349761}
+  m_Layer: 0
+  m_Name: HookStartingPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4916934909495349761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821375519085651261}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.01, y: 4.27, z: 8.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195362063333231792}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1109354428111910569
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class Hookshot : MonoBehaviour
     public LayerMask whatIsGrappleable;
     public FirstPersonControls fpeController;
     [SerializeField] private Transform hook;
+    [SerializeField] private Transform hookStartPos;
 
     [Header("Swinging")]
     [SerializeField] private float maxSwingDistance = 25f;
@@ -36,13 +37,6 @@ public class Hookshot : MonoBehaviour
     
     private bool isActive = false;
     private Vector3 remainingForce;
-    private Vector3 localHookPosition;
-
-
-    private void Awake()
-    {
-        localHookPosition = hook.localPosition;
-    }
 
     public void OnPickup()
     {
@@ -155,7 +149,7 @@ public class Hookshot : MonoBehaviour
     {
         fpeController.swinging = false;   
         lr.positionCount = 0;
-        hook.position = gunTip.position;
+        hook.localPosition = hookStartPos.position;
 
         Destroy(joint);
     }
