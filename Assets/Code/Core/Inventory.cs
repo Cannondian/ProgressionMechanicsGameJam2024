@@ -15,6 +15,7 @@ namespace Code.Core
         private GameObject[] _items;
         
         [SerializeField] private Transform _heldItemTransform;
+        public Transform HandTransform => _heldItemTransform;
         
         
         private void Awake()

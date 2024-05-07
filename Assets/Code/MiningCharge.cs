@@ -17,10 +17,10 @@ namespace Code
             _rigidbody = GetComponent<Rigidbody>();
         }
         
-        public void Throw(Vector3 direction, float force)
+        public void Throw(Vector3 force)
         {
             Debug.Log("Tossing explosive with force " + force);
-            _rigidbody.AddForce(direction * force, ForceMode.Impulse);
+            _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
         private void OnCollisionEnter(Collision other)

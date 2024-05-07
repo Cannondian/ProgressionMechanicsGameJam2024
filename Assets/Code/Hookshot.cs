@@ -15,7 +15,7 @@ public class Hookshot : MonoBehaviour
     [SerializeField] private Transform hook;
 
     [Header("Swinging")]
-    private float maxSwingDistance = 25f;
+    [SerializeField] private float maxSwingDistance = 25f;
     private Vector3 swingPoint;
     private SpringJoint joint;
 
@@ -155,7 +155,7 @@ public class Hookshot : MonoBehaviour
     {
         fpeController.swinging = false;   
         lr.positionCount = 0;
-        hook.position = this.transform.position + localHookPosition;
+        hook.position = gunTip.position;
 
         Destroy(joint);
     }
@@ -169,6 +169,8 @@ public class Hookshot : MonoBehaviour
 
         // forward
         if (Input.GetKey(KeyCode.W)) rb.AddForce(orientation.forward * (horizontalThrustForce * Time.deltaTime));
+        
+        if (Input.GetKey(KeyCode.S)) rb.AddForce(-orientation.forward * (horizontalThrustForce * Time.deltaTime));
 
         // shorten cable
         if (Input.GetKey(KeyCode.Space))
@@ -182,7 +184,7 @@ public class Hookshot : MonoBehaviour
             joint.minDistance = distanceFromPoint * 0.25f;
         }
         // extend cable
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             float extendedDistanceFromPoint = Vector3.Distance(transform.position, swingPoint);
 

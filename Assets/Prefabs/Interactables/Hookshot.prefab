@@ -274,12 +274,13 @@ MonoBehaviour:
     m_Bits: 16384
   fpeController: {fileID: 0}
   hook: {fileID: 643889973470204226}
+  maxSwingDistance: 10
   orientation: {fileID: 0}
   rb: {fileID: 0}
-  horizontalThrustForce: 1000
-  forwardThrustForce: 2000
+  horizontalThrustForce: 800
+  forwardThrustForce: 1500
   extendCableSpeed: 5
-  predictionSphereCastRadius: 3
+  predictionSphereCastRadius: 10
   predictionPoint: {fileID: 5643615159369237190}
   swingKey: 323
 --- !u!120 &7502248665620376082
