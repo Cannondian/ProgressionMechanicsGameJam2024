@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Cinemachine;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Code.Core
@@ -18,7 +19,7 @@ namespace Code.Core
         [Header("Fov")]
         public bool useFluentFov;
         public Rigidbody rb;
-        public Camera cam;
+        public CinemachineVirtualCamera cam;
         public float minMovementSpeed;
         public float maxMovementSpeed;
         public float minFov;
@@ -47,7 +48,7 @@ namespace Code.Core
             camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
-            if (useFluentFov) HandleFov();
+            //if (useFluentFov) HandleFov();
         }
 
         float lastFov = 0;
@@ -62,7 +63,7 @@ namespace Code.Core
 
             float fov = (currMoveSpeedProgress * fovDif) + minFov;
 
-            float currFov = cam.fieldOfView;
+            float currFov = cam.m_Lens.FieldOfView;
 
             float lerpedFov = Mathf.Lerp(fov, currFov, Time.deltaTime * 200);
             
@@ -71,7 +72,7 @@ namespace Code.Core
 
         public void DoFov(float endValue)
         {
-           GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
+          // cam.m_Transitions.
         }
 
         public void DoTilt(float zTilt)

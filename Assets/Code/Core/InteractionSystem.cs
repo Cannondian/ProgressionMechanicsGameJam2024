@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using UnityEngine;
 using Whilefun.FPEKit;
 
@@ -8,12 +9,12 @@ namespace Code.Core
     {
         [SerializeField] private float _interactionDistance;
         [SerializeField] private float _examinationDistance;
-        private Camera _camera;
+        private CinemachineVirtualCamera _camera;
         private InteractableObject _currentInspectedObject;
 
-        private void Awake()
+        private void Start()
         {
-            _camera = GetComponent<Camera>();
+            _camera = GameCore.PlayerObject.GetComponentInChildren<CinemachineVirtualCamera>();
             //_examinationCamera.enabled = false;
         }
 

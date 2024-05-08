@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Code.Core;
 using UnityEngine;
 using Whilefun.FPEKit;
@@ -41,7 +42,7 @@ public class Hookshot : MonoBehaviour
     public void OnPickup()
     {
         player = FindObjectOfType<FirstPersonControls>().transform;
-        cam = Camera.main.transform;
+        cam = GameCore.PlayerObject.GetComponentInChildren<CinemachineVirtualCamera>().transform;
         rb = player.GetComponent<Rigidbody>();
         orientation = player.transform;
         fpeController = player.GetComponent<FirstPersonControls>();

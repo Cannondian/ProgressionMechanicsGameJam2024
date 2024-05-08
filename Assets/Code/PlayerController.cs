@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using TMPro;
 using Whilefun.FPEKit;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
     private bool exitingSlope;
 
     [Header("Camera Effects")]
-    public Camera cam;
+    public CinemachineVirtualCamera cam;
     public float grappleFov = 95f;
 
     public Transform orientation;
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        cam = Camera.main;
+        cam = GameCore.PlayerObject.GetComponentInChildren<CinemachineVirtualCamera>();;
         rb = GetComponent<Rigidbody>();
         myMouseLook = GetComponent<FPEMouseLook>();
         //myMouseLook.Init(transform, cam.transform);
@@ -281,7 +282,7 @@ public class PlayerController : MonoBehaviour
     public void ResetRestrictions()
     {
         activeGrapple = false;
-        cam.fieldOfView = 60f;
+        cam.m_Lens.FieldOfView = 75f;
     }
 
     private void OnCollisionEnter(Collision collision)

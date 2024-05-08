@@ -16,6 +16,7 @@ public class GameCore : MonoBehaviour
     public static GameCore Instance { get; private set; }
     public static Inventory PlayerInventory { get; private set; }
     public static InteractionSystem InteractionSystem { get; private set; }
+    public static GameObject PlayerObject { get; private set; }
     
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class GameCore : MonoBehaviour
         
         PlayerInventory = FindObjectOfType<Inventory>();
         InteractionSystem = FindObjectOfType<InteractionSystem>();
+        PlayerObject = FindObjectOfType<FirstPersonControls>().gameObject;
     }
 
     private void Start()

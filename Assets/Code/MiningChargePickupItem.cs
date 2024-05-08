@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Whilefun.FPEKit;
@@ -14,10 +15,11 @@ namespace Code
         private bool _wasHoldingLastFrame;
         private bool _isActive;
         private int _chargeCount;
-        private Camera camera;
+        private CinemachineVirtualCamera camera;
         [SerializeField] private float _holdTimeBeforeThrow;
         [SerializeField] private float _baseThrowForce;
         [SerializeField] private float _chargeMass;
+        [SerializeField] private float _maxThrowForce = 10;
 
         [Header("Throw Trajectory")]
         [SerializeField] private LineRenderer lr;
@@ -26,9 +28,9 @@ namespace Code
         [SerializeField] [Range(0.01f, 0.25f)] private float timeBetweenPoints = 0.1f;
         [SerializeField] private LayerMask trajectoryCollision;
 
-        private void Awake()
+        private void Start()
         {
-            camera = Camera.main; 
+            camera = GameCore.PlayerObject.GetComponentInChildren<CinemachineVirtualCamera>();
         }
 
         public void OnPickup()
@@ -49,7 +51,7 @@ namespace Code
             if (Input.GetMouseButton(0))
             {
                 _holdTime += Time.deltaTime;
-                projectedThrowForce = _baseThrowForce * (_holdTime) % 10 * camera.transform.forward;
+                projectedThrowForce = Mathf.Clamp(_baseThrowForce * (_holdTime) % 10, 0f, _maxThrowForce) * camera.transform.forward;
                 _wasHoldingLastFrame = true;
                 DrawTrajectory();
             }
