@@ -14,7 +14,7 @@ namespace Code
         private float _holdTime;
         private bool _wasHoldingLastFrame;
         private bool _isActive;
-        private int _chargeCount;
+        private int _chargeCount = 255;
         private CinemachineVirtualCamera camera;
         [SerializeField] private float _holdTimeBeforeThrow;
         [SerializeField] private float _baseThrowForce;

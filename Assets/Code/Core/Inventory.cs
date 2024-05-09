@@ -32,15 +32,13 @@ namespace Code.Core
                     if (_items[i] == null)
                     {
                         //item.SetActive(false);
+                        // unequip the last item and equip the new one
+                        UnequipItem(_currentIndex);
                         _currentIndex = i;
                         Debug.Log("Item added to slot " + i);
                         item.transform.parent = transform;
                         _items[_currentIndex] = item;
                         _currentCount++;
-                        if (item.TryGetComponent<InteractableObject>(out var interactable))
-                        {
-                            interactable.onPickup.Invoke();
-                        }
                         EquipItem(_currentIndex);
                         return true;
                     }
@@ -69,10 +67,6 @@ namespace Code.Core
             item.transform.parent = null;
             _items[index] = null;
             _currentCount--;
-            if (item.TryGetComponent<InteractableObject>(out var interactable))
-            {
-                interactable.onDrop.Invoke();
-            }
         }
 
         public void EquipItem(int index)
@@ -95,6 +89,7 @@ namespace Code.Core
                 if (item.TryGetComponent<InteractableObject>(out var interactable))
                 {
                     _heldItemTransform.position += interactable.holdPositionOffset;
+                    interactable.onMadeActive.Invoke();
                 }
             }
         }
@@ -119,6 +114,7 @@ namespace Code.Core
                 if (item.TryGetComponent<InteractableObject>(out var interactable))
                 {
                     _heldItemTransform.position -= interactable.holdPositionOffset;
+                    interactable.onMadeInactive.Invoke();
                 }
                 item.SetActive(false);
             }

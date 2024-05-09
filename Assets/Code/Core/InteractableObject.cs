@@ -6,7 +6,7 @@ namespace Code.Core
     public class InteractableObject : MonoBehaviour
     {
         public InteractionType interactionType;
-        public UnityEvent onPickup, onDrop, onInspectStart, onEndInspect;
+        public UnityEvent onMadeActive, onMadeInactive, onInspectStart, onEndInspect;
         public Vector3 holdPositionOffset, holdRotationOffset;
         
         public enum InteractionType
