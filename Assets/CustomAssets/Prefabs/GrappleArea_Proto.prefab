@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3589815545793454352}
   - component: {fileID: 6602938790446897781}
   - component: {fileID: 3125848731102294913}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: GrappleableSpot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2998996887842345081}
   - component: {fileID: 3937260545751742130}
   - component: {fileID: 4930560783043233156}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: GrappleableSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5451397782787334721}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: GrappleArea_Proto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
