@@ -27,6 +27,7 @@ namespace Code.Core
                 {
                     if (Input.GetKeyDown(KeyCode.E) && GameCore.State == GameState.Normal)
                     {
+                        Debug.Log("Interacting with object " + interactableObject.name);
                         interactableObject.Interact();
                     }
                 }
@@ -59,7 +60,7 @@ namespace Code.Core
         {
             GameCore.State = GameState.Inspecting;
             _currentInspectedObject = obj;
-            obj.onInspectStart.Invoke();
+            obj.onMadeInactive.Invoke();
 
             if (obj.TryGetComponent<Rigidbody>(out var rb))
             {
@@ -73,7 +74,7 @@ namespace Code.Core
         public void StopExamination()
         {
             if (GameCore.State != GameState.Inspecting) return;
-            _currentInspectedObject.onEndInspect.Invoke();
+            _currentInspectedObject.onMadeActive.Invoke();
             
             if (_currentInspectedObject.TryGetComponent<Rigidbody>(out var rb))
             {

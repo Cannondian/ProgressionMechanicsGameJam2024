@@ -6,13 +6,14 @@ namespace Code.Core
     public class InteractableObject : MonoBehaviour
     {
         public InteractionType interactionType;
-        public UnityEvent onMadeActive, onMadeInactive, onInspectStart, onEndInspect;
+        public UnityEvent onMadeActive, onMadeInactive;
         public Vector3 holdPositionOffset, holdRotationOffset;
         
         public enum InteractionType
         {
             Pickup,
             Inspect,
+            Activate,
             Disabled
         }
         
@@ -25,6 +26,9 @@ namespace Code.Core
                     break;
                 case InteractionType.Inspect:
                     GameCore.InteractionSystem.InspectObject(this);
+                    break;
+                case InteractionType.Activate:
+                    this.onMadeActive.Invoke();
                     break;
                 default:
                     return;
