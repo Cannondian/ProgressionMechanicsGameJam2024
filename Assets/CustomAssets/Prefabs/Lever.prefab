@@ -109,8 +109,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7373522445052017218}
   m_Father: {fileID: 2359610592529333829}
@@ -141,8 +141,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 570053698990365777}
   m_Father: {fileID: 2359610592529333829}
@@ -157,6 +157,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2359610592529333829}
   - component: {fileID: 4095267000769927311}
+  - component: {fileID: 6162228562121927060}
+  - component: {fileID: 1600805081329869254}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -172,9 +174,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6443769769087510951}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.46535903, y: 0.6000256, z: 0.48895106, w: 0.4293449}
+  m_LocalRotation: {x: 0.46535817, y: -0.60002476, z: -0.48895308, w: -0.42934477}
   m_LocalPosition: {x: -220.35645, y: 2.6825466, z: -177.54805}
-  m_LocalScale: {x: 100, y: 100.00003, z: 100.00003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6421864982309090977}
@@ -196,7 +198,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gateDoorLeft: {fileID: 0}
   _gateDoorRight: {fileID: 0}
-  _leverObject: {fileID: 0}
+  _leverObject: {fileID: 1705180793839730780}
+--- !u!114 &6162228562121927060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6443769769087510951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bc7b42605440f29fe0d7da973f3f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionType: 2
+  onMadeActive:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4095267000769927311}
+        m_TargetAssemblyTypeName: Code.Core.GatePuzzleControl, Assembly-CSharp
+        m_MethodName: OnLeverActivate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onMadeInactive:
+    m_PersistentCalls:
+      m_Calls: []
+  holdPositionOffset: {x: 0, y: 0, z: 0}
+  holdRotationOffset: {x: 0, y: 0, z: 0}
+--- !u!65 &1600805081329869254
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6443769769087510951}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.3, y: 0.4000016, z: 0.12800185}
+  m_Center: {x: -8.2583593e-13, y: 5.3952967e-11, z: -0.035999313}
 --- !u!1 &6991969674814941869
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,8 +279,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3303098769436435825}
   m_Father: {fileID: 2359610592529333829}

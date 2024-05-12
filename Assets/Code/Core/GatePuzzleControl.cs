@@ -8,13 +8,16 @@ namespace Code.Core
         [SerializeField] private GameObject _gateDoorLeft;
         [SerializeField] private GameObject _gateDoorRight;
         [SerializeField] private GameObject _leverObject;
+        private bool pulled = false;
 
-        public void OnButtonPress()
+        public void OnLeverActivate()
         {
-            Debug.Log("moving the doors");
-            _gateDoorLeft.transform.DOLocalMoveX(1.9f, 3f);
-            _gateDoorRight.transform.DOLocalMoveX(-1.9f, 3f);
-            _leverObject.transform.DOLocalRotate(new Vector3(0, -45, 0), 1f);
+            if (pulled) return;
+            pulled = true;
+
+            _leverObject.transform.DOLocalRotate(new Vector3(-45, 0, 0), 1f);
+            _gateDoorLeft.transform.DOBlendableLocalMoveBy(new Vector3(0f, 0, 1.9f), 4f);
+            _gateDoorRight.transform.DOBlendableLocalMoveBy(new Vector3(0f, 0, -1.9f), 4f);
         }
     }
 }
