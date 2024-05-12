@@ -531,7 +531,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxSlopeAngle: 40
+  maxSlopeAngle: 0
   cam: {fileID: 4180129085147537356}
   orientation: {fileID: 1254870313269243847}
   state: 3

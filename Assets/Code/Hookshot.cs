@@ -125,11 +125,20 @@ public class Hookshot : MonoBehaviour
         
         fpeController.ResetRestrictions();
         fpeController.swinging = true;
+        rb.useGravity = true;
 
         swingPoint = predictionHit.point;
         joint = player.gameObject.AddComponent<SpringJoint>();
         joint.autoConfigureConnectedAnchor = false;
-        joint.connectedAnchor = swingPoint;
+        if (predictionHit.collider.TryGetComponent<Rigidbody>(out var hitRB))
+        {
+            Debug.Log("Connected to rigidbudy" + rb.name);
+            joint.connectedBody = hitRB;
+        }
+        else
+        {
+            joint.connectedAnchor = swingPoint;
+        }
 
         float distanceFromPoint = Vector3.Distance(player.position, swingPoint);
 
