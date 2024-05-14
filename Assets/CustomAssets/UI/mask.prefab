@@ -615,7 +615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 7430669273861860417}
-  remainingTime: 10
+  remainingTime: 600
 --- !u!1 &4793853241345502035
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 2222869736369964388}
   - component: {fileID: 1558433886832394305}
   m_Layer: 0
-  m_Name: RawImage
+  m_Name: CraclHelmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -723,10 +723,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1246474048006596171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.002533, y: -0.000015259}
-  m_SizeDelta: {x: 941, y: 539}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2222869736369964388
 CanvasRenderer:
@@ -743,7 +743,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6852854063815321503}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
