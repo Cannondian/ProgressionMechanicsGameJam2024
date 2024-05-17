@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/FirstPersonExplorationKit/Scenes/DemoScenes_2.2/demoMainMenu_0.unity
     guid: 6a819d87835309642b03dd8b59dbc760
-  - enabled: 1
+  - enabled: 0
     path: Assets/FirstPersonExplorationKit/Scenes/DemoScenes_2.2/demoScene_1.unity
     guid: a0e3a77ed4adc5c48bfe8cf3fdef22ff
-  - enabled: 1
+  - enabled: 0
     path: Assets/FirstPersonExplorationKit/Scenes/DemoScenes_2.2/demoScene_2.unity
     guid: 6dd73e1d1daa41a418e414d48396610e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Mauro.unity
-    guid: 27cd507d0658a47738fffd0dd6c2f864
-  - enabled: 1
+    guid: 4a2f9c30c8cc3fd469f86e41b4e770be
+  - enabled: 0
     path: Assets/Scenes/Part0.unity
     guid: b0d743b23c0fc478ca2e15ea0aba705e
   - enabled: 1
