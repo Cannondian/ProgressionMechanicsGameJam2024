@@ -21,6 +21,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Part0.unity
     guid: b0d743b23c0fc478ca2e15ea0aba705e
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 691ae7c1aff6146758d6e11e615431da
+  - enabled: 1
+    path: Assets/Scenes/Instructions.unity
+    guid: 44f63bbf2d19e413a881573c5d3b557d
+  - enabled: 1
     path: Assets/Scenes/VerticalSlice.unity
     guid: b15bb46d1a24247009e677ed11b7387b
   m_configObjects: {}
