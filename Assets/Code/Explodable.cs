@@ -9,17 +9,22 @@ namespace Code
     {
         private Rigidbody _rigidbody;
         private MeshRenderer _meshRenderer;
-        
+        private AudioSource audSrc;
+        public AudioClip chargeSound;
+        public AudioClip explosionSound;
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
             _meshRenderer = GetComponent<MeshRenderer>();
             //_rigidbody.isKinematic = true;
+            audSrc = GetComponent<AudioSource>();
             _rigidbody.Sleep();
         }
         
         public void Explode()
         {
+            audSrc.PlayOneShot(chargeSound, 0.5f);
             StartCoroutine(RunExplosion());
         }
 
@@ -27,10 +32,11 @@ namespace Code
         private IEnumerator RunExplosion()
         {
             _rigidbody.WakeUp();
+
             
             yield return new WaitForSeconds(1f);
-            
             StartCoroutine(FadeOutAlpha());
+            audSrc.PlayOneShot(explosionSound, 0.5f);
         }
         
         private IEnumerator FadeOutAlpha()

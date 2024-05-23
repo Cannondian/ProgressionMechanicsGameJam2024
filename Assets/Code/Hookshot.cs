@@ -33,6 +33,12 @@ public class Hookshot : MonoBehaviour
     public float predictionSphereCastRadius;
     public Transform predictionPoint;
 
+    [Header("Audio")]
+    public AudioSource audSrc;
+    public AudioClip hookShotShoot;
+    public AudioClip hookShotHooked;
+
+
     [Header("Input")]
     public KeyCode swingKey = KeyCode.P;
     
@@ -56,12 +62,20 @@ public class Hookshot : MonoBehaviour
         isActive = false;
     }
 
+    private void Start()
+    {
+        audSrc = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
         if (!isActive) return;
-        
-        if (Input.GetKeyDown(swingKey)) StartSwing();
+
+        if (Input.GetKeyDown(swingKey))
+        {
+            audSrc.PlayOneShot(hookShotShoot,0.25f);
+            StartSwing();
+        }
         if (Input.GetKeyUp(swingKey)) StopSwing();
         
         CheckForSwingPoints();
@@ -90,11 +104,15 @@ public class Hookshot : MonoBehaviour
 
         // Option 1 - Direct Hit
         if (raycastHit.point != Vector3.zero)
+        {
             realHitPoint = raycastHit.point;
+        }
 
         // Option 2 - Indirect (predicted) Hit
         else if (sphereCastHit.point != Vector3.zero)
+        {
             realHitPoint = sphereCastHit.point;
+        }
 
         // Option 3 - Miss
         else
@@ -122,7 +140,8 @@ public class Hookshot : MonoBehaviour
         if (predictionHit.point == Vector3.zero) return;
         
         Debug.Log("we are swinging");
-        
+        audSrc.PlayOneShot(hookShotHooked,0.5f);
+
         fpeController.ResetRestrictions();
         fpeController.swinging = true;
         rb.useGravity = true;
