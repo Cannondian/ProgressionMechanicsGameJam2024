@@ -1,11 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Core
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] private int _capacity = 4;
+        [SerializeField] private int _capacity = 2;
         public int Capacity => _capacity;
         
         [SerializeField] private int _currentCount = 0;
@@ -141,6 +140,28 @@ namespace Code.Core
             if (Input.GetKeyDown(KeyCode.G))
             {
                 DropItem(_currentIndex);
+            }
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                for (int i = 0; i < _currentCount; i++)
+                {
+                    if (_items[i].TryGetComponent<Hookshot>(out var hs))
+                    {
+                        EquipItem(i);
+                    }
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                for (int i = 0; i < _currentCount; i++)
+                {
+                    if (_items[i].TryGetComponent<MiningChargePickupItem>(out var mc))
+                    {
+                        EquipItem(i);
+                    }
+                }
             }
             
             // navigate through inventory with scroll wheel

@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 1829230976108901235}
   m_Layer: 10
   m_Name: PlayerCapsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -501,7 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _capacity: 4
-  _currentCount: 0
+  _currentCount: 2
   _heldItemTransform: {fileID: 5299290109268956089}
 --- !u!114 &4881905304421554759
 MonoBehaviour:

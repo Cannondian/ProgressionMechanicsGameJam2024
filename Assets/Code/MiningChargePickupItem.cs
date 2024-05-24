@@ -48,14 +48,14 @@ namespace Code
         {
             if (!_isActive) return;
             
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(1))
             {
                 _holdTime += Time.deltaTime;
                 projectedThrowForce = Mathf.Clamp(_baseThrowForce * (_holdTime) % 10, 0f, _maxThrowForce) * camera.transform.forward;
                 _wasHoldingLastFrame = true;
                 DrawTrajectory();
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(1))
             {
                 if (_wasHoldingLastFrame && _holdTime >= _holdTimeBeforeThrow)
                 {

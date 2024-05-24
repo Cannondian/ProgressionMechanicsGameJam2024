@@ -16,8 +16,13 @@ public class ResetGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            ReloadScene();
         }
+    }
+
+    public static void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 

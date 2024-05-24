@@ -44,12 +44,12 @@ namespace Code.Core
                 // mouse scroll zooms in and out
                 if (Input.GetMouseButton(0))
                 {
-                    _currentInspectedObject.transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * 2);
-                    _currentInspectedObject.transform.Rotate(Vector3.right, Input.GetAxis("Mouse Y") * 2);
+                    _currentInspectedObject.transform.Rotate(Vector3.right, Input.GetAxis("Mouse X") * 2);
+                    _currentInspectedObject.transform.Rotate(Vector3.forward, Input.GetAxis("Mouse Y") * 2);
                 }
                 else if (Input.mouseScrollDelta.y != 0)
                 {
-                    _currentInspectedObject.transform.position += _camera.transform.forward * Input.mouseScrollDelta.y;
+                    _currentInspectedObject.transform.position += _camera.transform.forward * (Input.mouseScrollDelta.y * 0.5f);
                 }
             }
             

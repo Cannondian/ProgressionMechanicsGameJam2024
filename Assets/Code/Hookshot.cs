@@ -91,10 +91,19 @@ public class Hookshot : MonoBehaviour
     private void CheckForSwingPoints()
     {
         if (joint != null) return;
-
-        RaycastHit sphereCastHit;
-        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, 
-                            out sphereCastHit, maxSwingDistance, whatIsGrappleable);
+        
+        RaycastHit[] sphereCastHit = Physics.SphereCastAll(cam.position, predictionSphereCastRadius, cam.forward, maxSwingDistance, whatIsGrappleable);
+        
+        // choose the farthest hit
+        float maxDistance = 0;
+        foreach (var hit in sphereCastHit)
+        {
+            if (hit.distance > maxDistance)
+            {
+                maxDistance = hit.distance;
+                predictionHit = hit;
+            }
+        }
 
         RaycastHit raycastHit;
         Physics.Raycast(cam.position, cam.forward, 
@@ -109,9 +118,9 @@ public class Hookshot : MonoBehaviour
         }
 
         // Option 2 - Indirect (predicted) Hit
-        else if (sphereCastHit.point != Vector3.zero)
+        else if (predictionHit.point != Vector3.zero)
         {
-            realHitPoint = sphereCastHit.point;
+            realHitPoint = predictionHit.point;
         }
 
         // Option 3 - Miss
@@ -130,7 +139,7 @@ public class Hookshot : MonoBehaviour
             predictionPoint.gameObject.SetActive(false);
         }
 
-        predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
+        predictionHit = raycastHit.point == Vector3.zero ? predictionHit : raycastHit;
     }
 
 

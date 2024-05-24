@@ -96,7 +96,7 @@ MonoBehaviour:
   horizontalThrustForce: 800
   forwardThrustForce: 1500
   extendCableSpeed: 5
-  predictionSphereCastRadius: 10
+  predictionSphereCastRadius: 3
   predictionPoint: {fileID: 3452948245013997258}
   audSrc: {fileID: 0}
   hookShotShoot: {fileID: 8300000, guid: 43aa70d3a93a14d1797b62825a79d95a, type: 3}
