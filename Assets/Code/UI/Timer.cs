@@ -6,15 +6,18 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] float remainingTime;
+    public static bool timerActive;
 
     // Update is called once per frame
     void Update()
     {
+        if (!timerActive) return;
+        
         if (remainingTime > 0) {
             remainingTime -= Time.deltaTime;
         } else if (remainingTime < 0) {
             remainingTime = 0;
-            // GameOver();
+            ResetGame.ReloadScene();
             timerText.color = Color.red;
         }
 

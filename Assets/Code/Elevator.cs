@@ -1,28 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Elevator : MonoBehaviour
 {
-    public Rigidbody elevator_rb;
+    [SerializeField] private Light elevatorLight;
+    [SerializeField] private Transform doorL;
+    [SerializeField] private Transform doorR;
+    [SerializeField] private GameObject part;
+    
     // Start is called before the first frame update
     void Start()
     {
-        elevator_rb = GetComponent<Rigidbody>();
-        elevator_rb.useGravity = false;
+        StartCoroutine(FlickerLight());
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    IEnumerator FlickerLight()
     {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
+        while (true)
         {
-            elevator_rb.useGravity = true;
+            elevatorLight.enabled = !elevatorLight.enabled;
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.5f));
         }
+    }
+
+    public void PartBroughtBack()
+    {
+        if (!part.activeSelf)
+        {
+            SceneManager.LoadScene("EndScene");
+        }
+    }
+
+
+    public void OpenElevator()
+    {
+        doorL.transform.DOBlendableLocalMoveBy(new Vector3(-3f, 0, 0f), 4f);
+        doorR.transform.DOBlendableLocalMoveBy(new Vector3(3f, 0, 0f), 4f);
     }
 }

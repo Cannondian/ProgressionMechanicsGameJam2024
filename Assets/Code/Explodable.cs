@@ -34,14 +34,14 @@ namespace Code
             _rigidbody.WakeUp();
 
             
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(FadeOutAlpha());
             audSrc.PlayOneShot(explosionSound, 0.5f);
         }
         
         private IEnumerator FadeOutAlpha()
         {
-            float duration = 2f;
+            float duration = 0.5f;
             float elapsedTime = 0f;
             Color startColor = _meshRenderer.material.color;
             float alpha = startColor.a;
