@@ -5103,8 +5103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67715b89b2f84b54b2cee87db46c3df2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeSound: {fileID: 0}
-  explosionSound: {fileID: 0}
+  chargeSound: {fileID: 8300000, guid: 0393a021734854dd5aed657ab2e41658, type: 3}
+  explosionSound: {fileID: 8300000, guid: 96babe75ff7f0431cab447f8f22fda60, type: 3}
 --- !u!54 &564798992
 Rigidbody:
   m_ObjectHideFlags: 0
